@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryValidation;
 use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -20,28 +21,31 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function store(Request $request)
+    public function store(CategoryValidation $categoryValidation)
     {
-        $validaData = $request->validate([
+        /*$validaData = $request->validate([
             'name' => 'required|max:255|min:3',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if(!$validaData){
             return response()->json(['data is not valid']);
-        }
-        Category::create($validaData);
+        }*/
+        Category::create($categoryValidation);
         return response()->json(['data is created']);
     }
-    public function update(Request $request, $id){
-        $validaData = $request->validate([
+    public function update(CategoryValidation $categoryValidation, $id){
+       /* $validaData = $request->validate([
             'name' => 'required|max:255|min:3',
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if(!$validaData){
             return response()->json(['data is not valid']);
-        }
+        }*/
         $category=Category::find($id);
-        $category->update($validaData);
+        if(!$category){
+            return response()->json(['category is not found']);
+        }
+        $category->update($categoryValidation);
         return response()->json(['data is updated']);
     }
     public function destroy($id){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaymentValidation;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,8 @@ class PaymentController extends Controller
 {
     //
 
-    public function store(Request $request){
-        $validated = $request->validate([
+    public function store(PaymentValidation $paymentValidation){
+        /*$validated = $request->validate([
           'orderID' => 'required',
             'amount' => 'required|numeric',
             'method' => '',
@@ -18,12 +19,12 @@ class PaymentController extends Controller
         ]);
         if(!$validated){
             return response()->json('data is not valid');
-        }
-        Payment::create($validated);
+        }*/
+        Payment::create($paymentValidation);
         return response()->json('data is created');
     }
-    public function update(Request $request, $id){
-        $validated = $request->validate([
+    public function update(PaymentValidation $paymentValidation, $id){
+       /* $validated = $request->validate([
             'orderID' => 'required',
             'amount' => 'required|numeric',
             'method' => '',
@@ -31,12 +32,12 @@ class PaymentController extends Controller
         ]);
         if(!$validated){
             return response()->json('data is not valid');
-        }
+        }*/
             $payment=Payment::find($id);
         if(!$payment){
             return response()->json('data not found');
         }
-        $payment->update($validated);
+        $payment->update($paymentValidation);
         return response()->json('data updated');
     }
     public function destroy($id){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderValidation;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -19,21 +20,21 @@ public function show($id)
     return response()->json($order);
 }
 
-public function store(Request $request){
-    $validatedData = $request->validate([
+public function store(OrderValidation $orderValidation){
+    /*$validatedData = $request->validate([
         'userID' => 'required',
         'totalPrice' => 'required|numeric',
         'items' => 'required',
     ]);
     if(!$validatedData){
         return response()->json(['error'=>'invalid data']);
-    }
-    Order::created($validatedData);
+    }*/
+    Order::created($orderValidation);
     return response()->json(['success'=>'Order created successfully']);
 }
-public function update(Request $request,$id)
+public function update(OrderValidation $orderValidation,$id)
 {
-    $validatedData = $request->validate([
+  /*  $validatedData = $request->validate([
         'userID' => 'required',
         'totalPrice' => 'required|numeric',
         'items' => 'required',
@@ -41,13 +42,13 @@ public function update(Request $request,$id)
     ]);
     if(!$validatedData){
         return response()->json(['error'=>'invalid data']);
-    }
+    }*/
 
     $oreder=Order::find($id);
     if(!$oreder){
         return response()->json(['error'=>'not found'],404);
     }
-    $oreder->update($validatedData);
+    $oreder->update($orderValidation);
     return response()->json(['success'=>'Order updated successfully']);
 }
 

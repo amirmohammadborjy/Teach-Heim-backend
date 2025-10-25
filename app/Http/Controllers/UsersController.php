@@ -2,30 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserValidation;
 use App\Models\User;
 use App\Models\users;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function store(Request $request){
+    public function store(UserValidation $userValidation){
 
 
-        $validatedData= $request->validate([
+     /*   $validatedData= $request->validate([
             'fullname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'phonenumber' => 'required|string|max:255',
             'address' => 'required|string|max:255',
 
-        ]);
-        if(!$validatedData){
+        ]);*/
+       /* if(!$validatedData){
             return response()->json(['error'=>'invalid data request']);
-        }
+        }*/
 
-        users::create($validatedData);
+        users::create($userValidation);
         return response()->json(['success'=>'Data added successfully.']);
-
+//
     }
     public function showall(){
         $users = users::all();
@@ -36,8 +37,8 @@ class UsersController extends Controller
         $user=users::find($id);
         return response()->json($user);
     }
-    public function update(Request $request,$id){
-        $validatedData= $request->validate([
+    public function update(UserValidation $userValidation,$id){
+       /* $validatedData= $request->validate([
             'fullname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
@@ -48,13 +49,13 @@ class UsersController extends Controller
         ]);
         if(!$validatedData){
             return response()->json(['error'=>'invalid data request']);
-        }
+        }*/
         $user=User::find($id);
         if(!$user){
             return response()->json(['error'=>'user not found']);
         }
 
-        $user->update($validatedData);
+        $user->update($userValidation);
         return response()->json(['success'=>'Data updated successfully.']);
     }
 

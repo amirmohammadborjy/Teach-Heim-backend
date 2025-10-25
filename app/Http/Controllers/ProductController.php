@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductValidation;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,9 @@ class ProductController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(ProductValidation $productValidation)
 {
-    $validatedData = $request->validate([
+  /*  $validatedData = $request->validate([
         'name' => 'required|max:255',
         'price' => 'required|max:255',
         'description' => 'required|max:255',
@@ -26,9 +27,9 @@ class ProductController extends Controller
         'color' => 'required|max:255',
         'discount' => 'required|max:255',
         'rate' => 'required|max:255'
-    ]);
+    ]);*/
 
-    Product::creat([$validatedData]);
+    Product::creat([$productValidation]);
     return response()->json(['success'=>'Product added successfully.']);
 }
 
@@ -43,15 +44,17 @@ public function show($id)
   return response()->json($product);
 }
 
-    public function update(Request $request,$id){
+    public function update(ProductValidation $productValidation,$id){
         $product=Product::find($id);
-
-        $validatedData = $request->validate([
+        if(!$product){
+            return response()->json(['error'=>'Product not found.']);
+        }
+       /* $validatedData = $request->validate([
             'name' => 'required|max:255',
             'price' => 'required|max:255',
             'description' => 'required|max:255',
-        ]);
-        $product->update($validatedData);
+        ]);*/
+        $product->update($productValidation);
         return response()->json(['success'=>'Product updated successfully.']);
 }
 
