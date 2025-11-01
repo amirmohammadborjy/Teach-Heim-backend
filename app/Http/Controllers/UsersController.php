@@ -3,13 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserValidation;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\users;
 use Illuminate\Http\Request;
+use Termwind\Components\Dd;
 
 class UsersController extends Controller
 {
-    public function store(UserValidation $userValidation){
+
+    public function login(Request $request){
+
+        $user=users::where('email',$request->email)->first();
+        if(!$user||$user->password!=$request->password){
+            return response()->json("email or password is wrong");
+        }
+        $token=$user->createToken('user|token');
+        return response()->json([
+            // 'token'=>$token->plainTextToken,
+            'login success welcom'
+        ]);
+    }
+    public function store(Request $request){
 
 
      /*   $validatedData= $request->validate([
@@ -23,19 +38,26 @@ class UsersController extends Controller
        /* if(!$validatedData){
             return response()->json(['error'=>'invalid data request']);
         }*/
+        try {
 
-        users::create($userValidation);
-        return response()->json(['success'=>'Data added successfully.']);
+            $user=users::create($request);
+            //$token=$user->createToken('user | token')->accessToken;
+            return response()->json(['success'=>'Data added successfully.',$user]);
+        }catch (\Exception $exception){
+            return response()->json(['error'=>$exception->getMessage(),'success'=>false,'line'=>$exception->getLine(),'file'=>$exception->getFile()]);
+        }
+
 //
     }
-    public function showall(){
+
+    public function index(){
         $users = users::all();
-        return response()->json($users);
+        return response()->json(new UserResource($users));
     }
     public function show($id)
     {
         $user=users::find($id);
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
     public function update(UserValidation $userValidation,$id){
        /* $validatedData= $request->validate([

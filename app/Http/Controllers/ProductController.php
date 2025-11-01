@@ -17,6 +17,7 @@ class ProductController extends Controller
 
     public function store(ProductValidation $productValidation)
 {
+
   /*  $validatedData = $request->validate([
         'name' => 'required|max:255',
         'price' => 'required|max:255',
@@ -30,7 +31,7 @@ class ProductController extends Controller
     ]);*/
 
     Product::creat([$productValidation]);
-    return response()->json(['success'=>'Product added successfully.']);
+   return response()->json(['success'=>'Product added successfully.']);
 }
 
 public function showall($id)
