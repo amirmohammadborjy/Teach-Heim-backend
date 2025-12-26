@@ -71,6 +71,11 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('/user') => storage_path('app/user'),
+        public_path('/product') => storage_path('app/product'),
+        public_path('/category') => storage_path('app/category'),
+        public_path('/blog') => storage_path('app/blog'),
+        public_path('/brand') => storage_path('app/brand'),
     ],
 
 ];

@@ -3,64 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BrandValidation;
+use App\Http\Resources\BrandResource;
 use App\Models\Brand;
-use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
     //
 
+    public function store(BrandValidation $brandValidation){
 
-public function store(BrandValidation $brandValidation){
-   /* $validaData = $request->validate([
-        'name' => 'required|max:255|min:3',
-        'logoURL'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
-    if(!$validaData){
-        return response()->json(['error'=>'invalid request data']);
-    }*/
-    Category::create($brandValidation);
-    return response()->json(['success'=>'Data added successfully.']);
-}
-public function show($id)
-{
-    $brand=Brand::find($id);
-    if(!$brand){
-        return response()->json(['error'=>'brand not found']);
+
+        $brand=Brand::create($brandValidation->except('logoURL'));
+        $logoURL=Storage::putFile('/brand',$brandValidation->logoURL);
+        $brand->update(['logoURL'=>$logoURL]);
+        return response()->json(['data'=>new BrandResource($brand)]);
     }
-    return response()->json($brand);
+    public function show($id)
+    {
+        $brand=Brand::find($id);
+        if(!$brand){
+            return response()->json(['error'=>'brand not found']);
+        }
+        return response()->json($brand);
 
-}
-public function index()
-{
-    $brand=Brand::all();
-    return response()->json($brand);
-}
-
-
-
-public function update(BrandValidation $brandValidation,$id){
-    /*$validaData = $request->validate([
-        'name' => 'required|max:255|min:3',
-        'logoURl'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
-    if(!$validaData){
-        return response()->json(['error'=>'invalid request data']);
-    }*/
-    $brand=Brand::find($id);
-    if(!$brand){
-        return response()->json(['error'=>'brand not found']);
     }
-    $brand->update($brandValidation);
-    return response()->json(['success'=>'Data updated successfully.']);
-}
-public function destroy($id){
-    $brand=Brand::find($id);
-    if(!$brand){
-        return response()->json(['error'=>'brand not found']);
+    public function index()
+    {
+        $brand=Brand::all();
+        return response()->json($brand);
     }
-    $brand->delete();
-    return response()->json(['success'=>'Data deleted successfully.']);
-}
+
+
+
+    public function update(BrandValidation $brandValidation,$id){
+
+        $brand=Brand::find($id);
+        if(!$brand){
+            return response()->json(['error'=>'brand not found']);
+        }
+        $brand->update($brandValidation->all());
+        return response()->json(['success'=>'Data updated successfully.']);
+    }
+    public function destroy($id){
+        $brand=Brand::find($id);
+        if(!$brand){
+            return response()->json(['error'=>'brand not found'],404);
+        }
+        $brand->delete();
+        return response()->json(['success'=>'Data deleted successfully.']);
+    }
 }

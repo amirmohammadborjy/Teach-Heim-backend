@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use http\Env\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserValidation extends FormRequest
@@ -21,13 +23,21 @@ class UserValidation extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'fullname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
-            'phonenumber' => 'required|string|max:255',
+            'phonenumber' => 'required|string|max:12',
             'address' => 'required|string|max:255',
-            'avatarURl'=>'image','mimes:jpeg,png,jpg,gif,svg'
+            'avatarURl'=>'image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'این ایمیل قبلاً ثبت شده است.',
         ];
     }
 }

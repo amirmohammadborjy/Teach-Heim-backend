@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrandValidation extends FormRequest
+class ContactusValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,9 @@ class BrandValidation extends FormRequest
     {
         return [
             //
-            'name'=>'required|max:255|min:3',
-            'logoURL'=>'image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'name' => 'required|max:255|min:3',
+            'email' => 'required|string|email|max:255',
+            'messages' => 'required|max:255|min:3',
         ];
     }
 }

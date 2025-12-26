@@ -26,12 +26,12 @@ class ProductValidation extends FormRequest
             'name' => 'required|max:255',
             'price' => 'required|max:255',
             'description' => 'required|max:255',
-            'image' => 'max:255|mimes:jpeg,jpg,png',
+            'imageURL' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5000',
             'category_id' => 'max:255',
             'brand_id' => 'max:255',
-            'color' => 'required|max:255',
-            'discount' => 'required|max:255',
-            'rate' => 'required|max:255'
+            'color' => 'max:255',
+            'discount' => 'max:255',
+            'rate' => 'max:255'
         ];
     }
 }

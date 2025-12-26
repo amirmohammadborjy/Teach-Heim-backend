@@ -25,7 +25,7 @@ class BlogValidation extends FormRequest
             //
             'title' => 'required|max:255|min:3',
             'description' => 'required|max:255|min:3',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

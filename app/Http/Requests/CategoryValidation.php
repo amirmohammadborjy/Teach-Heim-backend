@@ -22,9 +22,10 @@ class CategoryValidation extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
             'name' => 'required|max:255|min:3',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+
         ];
     }
 }
